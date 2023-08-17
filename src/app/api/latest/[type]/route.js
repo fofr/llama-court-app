@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
 import db from '../../../../lib/db';
 
-export async function GET(_request) {
+export async function GET(_request, context) {
+  const { type } = context.params;
+  const allowed = ['agents_state', 'case', 'evidence'];
+
+  if (!allowed.includes(type)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
+
   try {
     const { data, error } = await db
-      .from('case')
+      .from(type)
       .select('*')
       .order('created_at', { ascending: false })
       .limit(1);
