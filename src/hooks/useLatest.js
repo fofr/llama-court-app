@@ -12,7 +12,7 @@ export default function useLatestCases() {
       setLatestAgentsState(data.agents_state);
       setLatestEvidence(data.evidence);
       setLatestCase(data.case);
-    }, 5000);
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
