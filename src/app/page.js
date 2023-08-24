@@ -16,6 +16,9 @@ const ChooseRoom = () => {
           <img src="/llama-court.webp" alt="A picture of a llama judge" className="max-w-sm my-6 inline-block" /><br />
           Llama court is now in session
         </h1>
+        <p className="text-center text-lg">
+          Watch autonomous AI agents debate humorous court cases
+        </p>
         <ul className="flex place-content-center py-6">
           <li>
             <Link
