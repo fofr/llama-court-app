@@ -8,7 +8,7 @@ import GuiltyBars from './../GuiltyBars';
 import SpeechBubble from './../SpeechBubble';
 import ThoughtBubble from './../ThoughtBubble';
 import TimelineScrubber from './../TimelineScrubber';
-import Typewriter from './../Typewriter';
+import Typewriter from '../TypeWriter';
 
 
 const specialElite = Special_Elite({

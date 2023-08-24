@@ -1,4 +1,4 @@
-import Typewriter from './Typewriter';
+import Typewriter from './TypeWriter';
 
 
 export default function SpeechBubble({ doType, text }) {
