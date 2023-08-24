@@ -10,7 +10,6 @@ import ThoughtBubble from './../ThoughtBubble';
 import TimelineScrubber from './../TimelineScrubber';
 import Typewriter from '../TypeWriter';
 
-
 const specialElite = Special_Elite({
   weight: '400',
   subsets: ['latin']
