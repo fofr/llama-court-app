@@ -36,7 +36,7 @@ export async function GET(request) {
 
     const results = await Promise.all(TABLES.map(
       table => getDataFromTable(
-        table, room, effectiveBeforeDate
+        table, caseData.id, effectiveBeforeDate
       )));;
 
     const aggregatedData = results.reduce((acc, result) => {
@@ -53,10 +53,10 @@ export async function GET(request) {
   }
 }
 
-async function getDataFromTable(table, room, before) {
+async function getDataFromTable(table, caseID, before) {
   let query = db.from(table)
     .select('*')
-    .eq('room', room)
+    .eq('case_id', caseID)
     .order('created_at', { ascending: false })
     .limit(1);
 
@@ -77,6 +77,7 @@ async function fetchLatestCase(room) {
   const caseResult = await db
     .from('case')
     .select('*')
+    .order('created_at', { ascending: false })
     .eq('room', room)
     .limit(1);
 
