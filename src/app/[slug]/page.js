@@ -4,11 +4,11 @@
 import { Special_Elite } from 'next/font/google';
 import React, { useState } from 'react';
 import useLatest from '../../hooks/useLatest';
-import GuiltyBars from './../GuiltyBars';
-import SpeechBubble from './../SpeechBubble';
-import ThoughtBubble from './../ThoughtBubble';
-import TimelineScrubber from './../TimelineScrubber';
-import Typewriter from '../TypeWriter';
+import GuiltyBars from '../../components/GuiltyBars';
+import SpeechBubble from '../../components/SpeechBubble';
+import ThoughtBubble from '../../components/ThoughtBubble';
+import TimelineScrubber from '../../components/TimelineScrubber';
+import Typewriter from '../../components/TypeWriter';
 
 const specialElite = Special_Elite({
   weight: '400',
