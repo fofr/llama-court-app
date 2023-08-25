@@ -28,10 +28,6 @@ export default function useLatest(isPlaying, progress, direction, setProgress, s
       const response = await fetch(url);
       const { data, time, live } = await response.json();
 
-      if (data == null) {
-        return;
-      }
-
       progress = time;
       setProgress(time);
       setDirection(null);
