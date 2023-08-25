@@ -25,7 +25,7 @@ export async function GET(request) {
 
     let effectiveBeforeDate;
     if (after) {
-      const effectiveBeforeTimestamp = await effectiveBeforeTimestampForAfter(room, after);
+      const effectiveBeforeTimestamp = await effectiveBeforeTimestampForAfter(caseData.id, after);
       if (effectiveBeforeTimestamp === Infinity) {
         return NextResponse.json({ live: true, time: after.toISOString() }, { status: 200 });
       }
@@ -98,10 +98,10 @@ function parseRequestParams(request) {
   }
 }
 
-async function effectiveBeforeTimestampForAfter(room, after) {
+async function effectiveBeforeTimestampForAfter(caseID, after) {
   const nextTimestamps = await Promise.all(TABLES.map(async (table) => {
     const result = await db.from(table).select('created_at')
-      .eq('room', room)
+      .eq('case_id', caseID)
       // need to add a second because toISOString() uses milliseconds and timestamptz uses microseconds
       .gt('created_at', addOneSecond(after).toISOString())
       .order('created_at', { ascending: true })
