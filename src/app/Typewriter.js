@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 
-const Typewriter = ({ text, doType }) => {
+const Typewriter = ({ text, isPlaying, setDirection }) => {
   const [output, setOutput] = useState('');
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (doType) {
+    if (isPlaying && output != text) {
       setOutput('');
       setIndex(0);
     } else {
       setOutput(text);
       setIndex(text.length);
     }
-  }, [text, doType]);
+  }, [text, isPlaying]);
 
   useEffect(() => {
+    if (!isPlaying) {
+      return
+    }
     const timer = setTimeout(() => {
       if (index < text.length) {
         setOutput((prevOutput) => prevOutput + text[index]);
         setIndex((prevIndex) => prevIndex + 1);
+      } else {
+        setDirection("forward");
       }
     }, 30);
 

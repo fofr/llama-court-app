@@ -1,10 +1,10 @@
-import Typewriter from './TypeWriter';
+import Typewriter from './Typewriter';
 
 
-export default function SpeechBubble({ doType, text }) {
+export default function SpeechBubble({ isPlaying, setDirection, text }) {
   return (
     <div className="relative bg-white p-2 m-2 bg-opacity-80">
-      <p><Typewriter doType={doType} text={text} /></p>
+      <p><Typewriter isPlaying={isPlaying} setDirection={setDirection} text={text} /></p>
       <div style={{
         position: 'absolute', // Position the triangle relative to the bubble
         bottom: '-20px', // Shift the triangle to the bottom

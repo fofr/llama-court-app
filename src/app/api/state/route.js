@@ -1,62 +1,37 @@
 import { NextResponse } from 'next/server';
 import db from '../../../lib/db';
 
-const TABLES = ['agents_state', 'evidence', 'verdict'];
-
 export async function GET(request) {
-  const { room, before, after, isLatest } = parseRequestParams(request);
+  const { room, before, after, isLatest, isStart } = parseRequestParams(request);
 
   if (!room) {
     return NextResponse.json({ error: 'Missing room' }, { status: 400 });
   }
 
-  try {
-    const caseData = await fetchLatestCase(room);
-    if (!caseData) {
-      return NextResponse.json({ error: 'Case not found' }, { status: 404 });
+  let stateData;
+  if (after) {
+    const effectiveBeforeTimestamp = await effectiveBeforeTimestampForAfter(room, after);
+    if (effectiveBeforeTimestamp === Infinity) {
+      return NextResponse.json({ live: true, time: after.toISOString() }, { status: 200 });
     }
-
-    if (!before && !after && !isLatest) {
-      return NextResponse.json({
-        data: { case: caseData },
-        time: new Date(caseData.created_at).toISOString()
-      }, { status: 200 });
-    }
-
-    let effectiveBeforeDate;
-    if (after) {
-      const effectiveBeforeTimestamp = await effectiveBeforeTimestampForAfter(caseData.id, after);
-      if (effectiveBeforeTimestamp === Infinity) {
-        return NextResponse.json({ live: true, time: after.toISOString() }, { status: 200 });
-      }
-      effectiveBeforeDate = addOneSecond(new Date(effectiveBeforeTimestamp));
-    } else {
-      effectiveBeforeDate = before
-    }
-
-    const results = await Promise.all(TABLES.map(
-      table => getDataFromTable(
-        table, caseData.id, effectiveBeforeDate
-      )));;
-
-    const aggregatedData = results.reduce((acc, result) => {
-      acc[result.table] = result.data;
-      return acc;
-    }, {});
-
-    const time = latestTimeInData(caseData, aggregatedData);
-    aggregatedData.case = caseData;
-    return NextResponse.json({ data: aggregatedData, time: time.toISOString() }, { status: 200 });
-
-  } catch (error) {
-    return NextResponse.json({ error: error.message || error }, { status: 500 });
+    const effectiveBeforeDate = addOneSecond(new Date(effectiveBeforeTimestamp));
+    stateData = await getState(room, effectiveBeforeDate);
+  } else if (before) {
+    stateData = await getState(room, before);
+  } else if (isLatest) {
+    stateData = await getState(room);
+  } else if (isStart) {
+    stateData = await getStartState(room);
   }
+
+  const time = new Date(stateData.created_at);
+  return NextResponse.json({ state: stateData, time: time.toISOString() }, { status: 200 });
 }
 
-async function getDataFromTable(table, caseID, before) {
-  let query = db.from(table)
+async function getState(room, before) {
+  let query = db.from("state")
     .select('*')
-    .eq('case_id', caseID)
+    .eq('room', room)
     .order('created_at', { ascending: false })
     .limit(1);
 
@@ -70,18 +45,46 @@ async function getDataFromTable(table, caseID, before) {
     throw error;
   }
 
-  return { table, data: data.length ? data[0] : null };
+  return data.length ? data[0] : null;
 }
 
-async function fetchLatestCase(room) {
-  const caseResult = await db
-    .from('case')
-    .select('*')
-    .order('created_at', { ascending: false })
+async function getStartState(room) {
+  // Get the latest case_id for the room
+  const { data: caseData, error: caseError } = await db.from('case')
+    .select('id')
     .eq('room', room)
+    .order('id', { ascending: false })
     .limit(1);
 
-  return caseResult.data.length ? caseResult.data[0] : null;
+  if (caseError) {
+    throw caseError;
+  }
+
+  // If no cases are found, return null
+  if (!caseData.length) {
+    return null;
+  }
+
+  const latestCaseId = caseData[0].id;
+
+  // Get the earliest state for the latest case
+  const { data: stateData, error: stateError } = await db.from('state')
+    .select('*')
+    .eq('case_id', latestCaseId)
+    .order('created_at', { ascending: true })
+    .limit(1);
+
+  if (stateError) {
+    throw stateError;
+  }
+
+  if (!stateData.length) {
+    return {
+      "created_at": caseData[0].created_at
+    }
+  }
+
+  return stateData.length ? stateData[0] : null;
 }
 
 function parseRequestParams(request) {
@@ -89,51 +92,26 @@ function parseRequestParams(request) {
   const before = request.nextUrl.searchParams.get("before");
   const after = request.nextUrl.searchParams.get("after");
   const latest = request.nextUrl.searchParams.get("latest");
+  const start = request.nextUrl.searchParams.get("start");
 
   return {
     room: room,
     before: before && parseDate(before),
     after: after && parseDate(after),
     isLatest: latest,
+    isStart: start,
   }
 }
 
-async function effectiveBeforeTimestampForAfter(caseID, after) {
-  const nextTimestamps = await Promise.all(TABLES.map(async (table) => {
-    const result = await db.from(table).select('created_at')
-      .eq('case_id', caseID)
-      // need to add a second because toISOString() uses milliseconds and timestamptz uses microseconds
-      .gt('created_at', addOneSecond(after).toISOString())
-      .order('created_at', { ascending: true })
-      .limit(1);
+async function effectiveBeforeTimestampForAfter(room, after) {
+  const result = await db.from("state").select('created_at')
+    .eq('room', room)
+    // need to add a second because toISOString() uses milliseconds and timestamptz uses microseconds
+    .gt('created_at', addOneSecond(after).toISOString())
+    .order('created_at', { ascending: true })
+    .limit(1);
 
-    return result.data.length ? new Date(result.data[0].created_at).getTime() : Infinity;
-  }));
-
-  return Math.min(...nextTimestamps);
-}
-
-function latestTimeInData(caseData, aggregatedData) {
-  let timestamps = [];
-
-  if (aggregatedData.agents_state && aggregatedData.agents_state.created_at) {
-    timestamps.push(new Date(aggregatedData.agents_state.created_at).getTime());
-  }
-
-  if (aggregatedData.evidence && aggregatedData.evidence.created_at) {
-    timestamps.push(new Date(aggregatedData.evidence.created_at).getTime());
-  }
-
-  if (aggregatedData.verdict && aggregatedData.verdict.created_at) {
-    timestamps.push(new Date(aggregatedData.verdict.created_at).getTime());
-  }
-
-  if (caseData && caseData.created_at) {
-    timestamps.push(new Date(caseData.created_at).getTime());
-  }
-
-  // Find the latest timestamp
-  return new Date(Math.max(...timestamps));
+  return result.data.length ? new Date(result.data[0].created_at).getTime() : Infinity;
 }
 
 function parseDate(s) {
