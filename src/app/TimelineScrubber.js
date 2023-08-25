@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TimelineScrubber({ direction, onDirectionChange, isPlaying, onIsPlayingChange, isLive, setIsLive, isAtStart }) {
+export default function TimelineScrubber({ direction, onDirectionChange, isPlaying, onIsPlayingChange, isLive, setIsLive }) {
 
   const moveBack = () => {
     onDirectionChange && onDirectionChange("back");
@@ -13,6 +13,9 @@ export default function TimelineScrubber({ direction, onDirectionChange, isPlayi
       setIsLive(false);
     }
     onIsPlayingChange && onIsPlayingChange(!isPlaying);
+    if (!isPlaying) {
+      onDirectionChange("forward");
+    }
   };
 
   const moveForward = () => {
@@ -24,11 +27,9 @@ export default function TimelineScrubber({ direction, onDirectionChange, isPlayi
     onIsPlayingChange(true);
   };
 
-  console.log("isAtStart", isAtStart);
-
   return (
     <div className="text-lg timeline-scrubber">
-      <button disabled={direction != null || isAtStart} onClick={moveBack} className="mr-2">⏪</button>
+      <button disabled={direction != null} onClick={moveBack} className="mr-2">⏪</button>
       <button onClick={togglePlayPause} className="mr-2">{isPlaying ? "⏸" : "▶"}</button>
       <button disabled={direction != null || isLive} onClick={moveForward} className="mr-2">⏩</button>
       {isLive ? (
