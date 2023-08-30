@@ -1,24 +1,18 @@
 export default function GuiltyBars({ guiltyPercent, innocentPercent }) {
+  const getBackgroundColor = (guiltyPercent) => {
+    if (guiltyPercent > 95) return 'bg-red-500';
+    if (guiltyPercent > 75) return 'bg-orange-400';
+    if (guiltyPercent > 55) return 'bg-orange-400';
+    if (guiltyPercent > 45) return 'bg-slate-500';
+    return 'bg-lime-600';
+  }
+
   return (
-    <div className="relative flex justify-between pb-1">
-      <div
-        className="absolute bg-green-500 bg-opacity-70 transition-all duration-500"
-        style={{
-          width: `${innocentPercent / 2}%`,
-          right: '50%',
-          height: "14px",
-        }}
-      />
-      <div
-        className="absolute bg-red-500 bg-opacity-70 transition-all duration-500"
-        style={{
-          width: `${guiltyPercent / 2}%`,
-          left: '50%',
-          height: "14px",
-        }}
-      />
-      <span className="relative text-white">Innocent</span>
-      <span className="relative text-white">Guilty</span>
+    <div className={`
+      inline-flex items-center text-white text-lg font-bold border-white px-2 py-4 text-center rounded-full drop-shadow-lg
+      ${getBackgroundColor(guiltyPercent)}`}>
+      <span className="mr-1">{guiltyPercent}%</span>
+      <span className="text-base sr-only">guilty</span>
     </div>
   );
 }

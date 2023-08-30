@@ -1,11 +1,13 @@
 export default function ThoughtBubble({ doFade, text }) {
   return (
-    <div>
-      <div className={(doFade ? "fade-in " : "") + "bg-blue-300 p-2 m-2 rounded-lg relative"} style={{ animationDelay: '1s' }}>
+    <div className="xl:text-base relative">
+      <div className={(doFade ? "fade-in " : "") + "bg-blue-300 -left-10 -mr-10 p-4 rounded relative max-h-80 overflow-scroll"} style={{ animationDelay: '1s' }}>
         <p>{text}</p>
       </div>
-      <div className={(doFade ? "fade-in " : "") + "absolute -bottom-7 left-4 w-6 h-6 bg-blue-300 rounded-full bg-opacity-80"} style={{ animationDelay: '0.5s' }}></div>
-      <div className={(doFade ? "fade-in " : "") + "absolute -bottom-11 left-9 w-4 h-4 bg-blue-300 rounded-full bg-opacity-80"} style={{ animationDelay: '0s' }}></div>
+      <div className="absolute top-0 -left-10">
+        <div className={(doFade ? "fade-in " : "") + "absolute top-5 -left-8 w-6 h-6 bg-blue-300 rounded-full drop-shadow-lg"} style={{ animationDelay: '0.5s' }}></div>
+        <div className={(doFade ? "fade-in " : "") + "absolute top-10 -left-12 w-4 h-4 bg-blue-300 rounded-full drop-shadow-lg"} style={{ animationDelay: '0s' }}></div>
+      </div>
     </div>
   );
 }
