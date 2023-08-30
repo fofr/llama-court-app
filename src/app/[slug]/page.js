@@ -25,9 +25,9 @@ export default function Page({ params }) {
 
   return (
     <main className={"flex min-h-screen max-h-screen flex-col text-xs " + specialElite.className}>
-      <ul className="flex m-0 p-0 relative h-screen">
+      <ul className="flex m-0 p-0 relative h-screen overflow-scroll pb-16">
         {agents && agents.map(agent => (
-          <li key={agent.name} className="w-1/2 m-0 p-0 grid grid-rows-agent">
+          <li key={agent.name} className="w-1/2 m-0 p-0 grid grid-rows-agent" style={{minWidth: '25em'}}>
             <div className="relative">
               <img src={agent.image_uri} alt={agent.name} className="w-full h-full object-cover" />
               <div className="absolute bottom-0 bg-black bg-opacity-50 p-1 w-full">
@@ -54,20 +54,21 @@ export default function Page({ params }) {
             </div>
           </li>
         ))}
-        {evidence && (
-          <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
-            <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={evidence} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
-          </div>
-        )}
-        {verdict && verdict && (
-          <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
-            <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={verdict} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
-          </div>
-        )}
-        {!agents && (
-          <p className="text-lg m-auto"><Typewriter text="The court is being assembled..." isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
-        )}
       </ul>
+      {evidence && (
+        <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
+          <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={evidence} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
+        </div>
+      )}
+      {verdict && verdict && (
+        <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
+          <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={verdict} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
+        </div>
+      )}
+      {!agents && (
+        <p className="text-lg m-auto"><Typewriter text="The court is being assembled..." isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
+      )}
+
       <TimelineScrubber direction={direction} onDirectionChange={setDirection} isPlaying={isPlaying} onIsPlayingChange={setIsPlaying} isLive={isLive} setIsLive={setIsLive} />
       <style jsx>{`
         .grid-rows-agent {
