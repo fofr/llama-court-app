@@ -1,4 +1,5 @@
 import React from 'react';
+import { PlayIcon, PauseCircleIcon, ForwardIcon, BackwardIcon } from '@heroicons/react/24/solid';
 
 export default function TimelineScrubber({ direction, onDirectionChange, isPlaying, onIsPlayingChange, isLive, setIsLive }) {
 
@@ -28,14 +29,14 @@ export default function TimelineScrubber({ direction, onDirectionChange, isPlayi
   };
 
   return (
-    <div className="text-lg timeline-scrubber">
-      <button disabled={direction != null} onClick={moveBack} className="mr-2">⏪</button>
-      <button onClick={togglePlayPause} className="mr-2">{isPlaying ? "⏸" : "▶"}</button>
-      <button disabled={direction != null || isLive} onClick={moveForward} className="mr-2">⏩</button>
+    <div className="text-lg timeline-scrubber p-4 flex mx-auto items-center">
+      <button disabled={direction != null} onClick={moveBack} className="mr-2"><BackwardIcon className="w-8 h-8" /></button>
+      <button onClick={togglePlayPause} className="mr-2">{isPlaying ? <PauseCircleIcon className="w-8 h-8" /> : <PlayIcon className="w-8 h-8" />}</button>
+      <button disabled={direction != null || isLive} onClick={moveForward} className="mr-2"><ForwardIcon className="w-8 h-8" /></button>
       {isLive ? (
-        <span className="ml-2 p-1 font-serif bg-red-500 rounded-lg text-slate-50">Live</span>
+        <span className="ml-2 rounded border-2 border-white ml-4 px-3 py-1 bg-red-500 rounded-lg text-slate-50">Live</span>
       ) : (
-        <button onClick={goLive} className="ml-2">Go live!</button>
+        <button onClick={goLive} className="ml-2 rounded border-2 border-black ml-4 px-3 py-1 bg-slate-200">Go live</button>
       )}
     </div>
   );
