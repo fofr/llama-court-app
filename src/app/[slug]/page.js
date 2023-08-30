@@ -26,17 +26,19 @@ export default function Page({ params }) {
 
   return (
     <main className={"flex min-h-screen max-h-screen flex-col text-xs p-4"}>
-      <div className={specialElite.className}>
+      <h2 className={'text-4xl mt-4 mb-6 font-bold ' + specialElite.className}>Courtroom {room}</h2>
+
+      <div className={'text-xl max-w-prose ' + specialElite.className}>
         {evidence && evidence.text && (
           <div className="p-4">
-            <p className="whitespace-pre-wrap text-black text-base">
+            <p className="whitespace-pre-wrap text-black text-xl">
               <Typewriter text={evidence.text} doType={isPlaying && !(direction == "forward" || direction == "back")} />
             </p>
           </div>
         )}
         {verdict && verdict.text && (
           <div className="p-4">
-            <p className="whitespace-pre-wrap text-black text-base">
+            <p className="whitespace-pre-wrap text-black text-xl">
               <Typewriter text={verdict.text} doType={isPlaying && !(direction == "forward" || direction == "back")} />
             </p>
           </div>

@@ -3,7 +3,7 @@ import Typewriter from './TypeWriter';
 
 export default function SpeechBubble({ doType, text }) {
   return (
-    <div className="xl:text-base relative -left-10 -mr-10 bg-orange-100 rounded p-4">
+    <div className="xl:text-base relative -left-10 -mr-10 bg-orange-100 rounded p-4" style={{minHeight: '5em'}}>
       <p className="max-h-80 overflow-scroll">
         <Typewriter doType={doType} text={text} />
       </p>
