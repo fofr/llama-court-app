@@ -27,7 +27,7 @@ export default function Page({ params }) {
     <main className={"flex min-h-screen max-h-screen flex-col text-xs " + specialElite.className}>
       <ul className="flex m-0 p-0 relative h-screen overflow-scroll pb-16">
         {agents && agents.map(agent => (
-          <li key={agent.name} className="w-1/2 m-0 p-0 grid grid-rows-agent" style={{minWidth: '25em'}}>
+          <li key={agent.name} className="w-1/2 m-0 p-0 grid grid-rows-agent" style={{minWidth: '17em'}}>
             <div className="relative">
               <img src={agent.image_uri} alt={agent.name} className="w-full h-full object-cover" />
               <div className="absolute bottom-0 bg-black bg-opacity-50 p-1 w-full">
