@@ -48,34 +48,38 @@ export default function Page({ params }) {
         )}
         <TimelineScrubber direction={direction} onDirectionChange={setDirection} isPlaying={isPlaying} onIsPlayingChange={setIsPlaying} isLive={isLive} setIsLive={setIsLive} isAtStart={isAtStart} />
       </div>
-      <h2 className={'text-4xl mt-10 mb-6 font-bold ' + specialElite.className}>Members of the jury</h2>
-      <ul className="mb-6 pb-6 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 place-items-start h-full w-full auto-cols-max">
-        {agentsState && agentsState.state.map(agentState => (
-          <li key={agentState.name} className="w-full">
-            <div className="grid gap-4" style={{ gridTemplateColumns: '16em auto' }}>
-              <div className="w-48 relative">
-                <img src={agentState.image_uri} alt={agentState.name} className="w-48 h-96 rounded" />
-                <div className="absolute bottom-3 left-3">
-                  <GuiltyBars guiltyPercent={agentState.guilty_percent} innocentPercent={agentState.innocent_percent} />
+      {agentsState && (
+        <>
+          <h2 className={'text-4xl mt-10 mb-6 font-bold ' + specialElite.className}>Members of the jury</h2>
+          <ul className="mb-6 pb-6 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 place-items-start h-full w-full auto-cols-max">
+            {agentsState && agentsState.state.map(agentState => (
+              <li key={agentState.name} className="w-full">
+                <div className="grid gap-4" style={{ gridTemplateColumns: '16em auto' }}>
+                  <div className="w-48 relative">
+                    <img src={agentState.image_uri} alt={agentState.name} className="w-48 h-96 rounded" />
+                    <div className="absolute bottom-3 left-3">
+                      <GuiltyBars guiltyPercent={agentState.guilty_percent} innocentPercent={agentState.innocent_percent} />
+                    </div>
+                  </div>
+                  <div className="flex-grow">
+                    <h3 className={'text-2xl mt-4 mb-1 font-bold ' + specialElite.className }>{agentState.name}</h3>
+                    {agentState.latest_utterance && (
+                      <div className="mt-2">
+                        <SpeechBubble doType={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_utterance} />
+                      </div>
+                    )}
+                    {agentState.latest_sentiment && (
+                      <div className="mt-2">
+                        <ThoughtBubble doFade={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_sentiment} />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex-grow">
-                <h3 className={'text-2xl mt-4 mb-1 font-bold ' + specialElite.className }>{agentState.name}</h3>
-                {agentState.latest_utterance && (
-                  <div className="mt-2">
-                    <SpeechBubble doType={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_utterance} />
-                  </div>
-                )}
-                {agentState.latest_sentiment && (
-                  <div className="mt-2">
-                    <ThoughtBubble doFade={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_sentiment} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </main>
   );
 }
