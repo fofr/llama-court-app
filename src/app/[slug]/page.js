@@ -1,6 +1,5 @@
 'use client';
 
-// pages/Room.js
 import { Special_Elite } from 'next/font/google';
 import React, { useState } from 'react';
 import useLatest from '../../hooks/useLatest';
@@ -26,57 +25,48 @@ export default function Page({ params }) {
   const isAtStart = courtCase == null || Math.abs(new Date(courtCase.created_at).getTime() - new Date(progress).getTime()) < 1;
 
   return (
-    <main className={"flex min-h-screen max-h-screen flex-col text-xs " + specialElite.className}>
-      <ul className="flex m-0 p-0 relative h-screen">
+    <main className={"flex min-h-screen max-h-screen flex-col text-xs"}>
+      <ul className="grid grid-cols-3 grid-rows-2 gap-2 place-items-start h-full w-full auto-cols-max">
         {agentsState && agentsState.state.map(agentState => (
-          <li key={agentState.name} className="w-1/2 m-0 p-0 grid grid-rows-agent">
-            <div className="relative">
-              <img src={agentState.image_uri} alt={agentState.name} className="w-full h-full object-cover" />
-              <div className="absolute bottom-0 bg-black bg-opacity-50 p-1 w-full">
-                <p className="whitespace-pre-wrap text-white pb-2">
-                  <em>Beliefs:</em>
-                  <br />
-                  {agentState.beliefs}
-                </p>
-                <GuiltyBars guiltyPercent={agentState.guilty_percent} innocentPercent={agentState.innocent_percent} />
+          <li key={agentState.name} className="w-full">
+            <div className="grid gap-4 border-2 rounded" style={{ gridTemplateColumns: '16em auto' }}>
+              <div className="w-48">
+                <img src={agentState.image_uri} alt={agentState.name} className="w-48 h-96" />
               </div>
-              {agentState.latest_utterance && (
-                <div className="absolute top-0 left-0">
-                  <SpeechBubble doType={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_utterance} />
+              <div className="flex-grow">
+                <h3 className={'text-2xl mt-2 mb-1 font-bold ' + specialElite.className }>{agentState.name}</h3>
+                {agentState.latest_utterance && (
+                  <div className="mt-2">
+                    <SpeechBubble doType={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_utterance} />
+                  </div>
+                )}
+                <div className="mt-2">
+                  <GuiltyBars guiltyPercent={agentState.guilty_percent} innocentPercent={agentState.innocent_percent} />
                 </div>
-              )}
-              {agentState.latest_sentiment && (
-                <div className="absolute top-0 left-0">
-                  <ThoughtBubble doFade={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_sentiment} />
-                </div>
-              )}
-            </div>
-            <div className="mt-2 text-center">
-              <h3 className="text-xl mb-1 font-bold">{agentState.name}</h3>
+                {agentState.latest_sentiment && (
+                  <div className="mt-2">
+                    <ThoughtBubble doFade={isPlaying && !(direction == "forward" || direction == "back")} text={agentState.latest_sentiment} />
+                  </div>
+                )}
+              </div>
             </div>
           </li>
         ))}
-        {evidence && evidence.text && (
-          <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
-            <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={evidence.text} doType={isPlaying && !(direction == "forward" || direction == "back")} /></p>
-          </div>
-        )}
-        {verdict && verdict.text && (
-          <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
-            <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={verdict.text} doType={isPlaying && !(direction == "forward" || direction == "back")} /></p>
-          </div>
-        )}
-        {!agentsState && (
-          <p className="text-lg m-auto"><Typewriter text="The court is being assembled..." doType={isPlaying && !(direction == "forward" || direction == "back")} /></p>
-        )}
       </ul>
+      {evidence && evidence.text && (
+        <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
+          <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={evidence.text} doType={isPlaying && !(direction == "forward" || direction == "back")} /></p>
+        </div>
+      )}
+      {verdict && verdict.text && (
+        <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
+          <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={verdict.text} doType={isPlaying && !(direction == "forward" || direction == "back")} /></p>
+        </div>
+      )}
+      {!agentsState && (
+        <p className="text-lg m-auto"><Typewriter text="The court is being assembled..." doType={isPlaying && !(direction == "forward" || direction == "back")} /></p>
+      )}
       <TimelineScrubber direction={direction} onDirectionChange={setDirection} isPlaying={isPlaying} onIsPlayingChange={setIsPlaying} isLive={isLive} setIsLive={setIsLive} isAtStart={isAtStart} />
-      <style jsx>{`
-        .grid-rows-agent {
-          grid-template-rows: 1fr auto;
-        }
-      `}</style>
     </main>
-
   );
 }
