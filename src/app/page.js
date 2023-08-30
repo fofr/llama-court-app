@@ -10,7 +10,7 @@ const specialElite = Special_Elite({
 const ChooseRoom = () => {
   return (
     <div>
-      <div className="container mx-auto md:px-8 px-4 py-4 pb-10 bg-white border-black min-h-screen">
+      <div className="container max-w-4xl mx-auto md:px-8 px-4 py-4 pb-10 bg-white border-black min-h-screen">
         <h1 className={'text-center md:text-4xl text-2xl font-bold ' + specialElite.className}>
           <img src="/llama-court.webp" alt="A picture of a llama judge" className="max-w-sm my-6 inline-block" /><br />
           Llama court is now in session
