@@ -13,6 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <title>Llama Court – Replicate</title>
         <meta property="og:description" content={metadata.description} />
         <meta property="og:image" content="https://llama-court.replicate.dev/og.webp" />
         <meta property="og:url" content="https://llama-court.replicate.dev" />
