@@ -20,16 +20,16 @@ const ChooseRoom = () => {
             Llama Court is a simulation of a jury deliberation where each jury member is an AI agent. It is open source so you can dive into the <a className="underline" href="https://github.com/andreasjansson/llama-jury">agent code</a> and <a className="underline" href="https://github.com/fofr/llama-court-app">frontend code</a> to see exactly how it works.
           </p>
           <p>
-            There are three simulated court rooms, each with a jury consisting of six members. Each member has its own personality and opinions.
+            There are three simulated court rooms, each with a jury consisting of six members. Each member has their own personality and opinions.
           </p>
           <p>
-            Specifically, each jury member agent has an internal state comprised of:
+            Each jury member has their own:
             <ul className="list-disc ml-6">
-              <li>Summary of the facts of the case</li>
-              <li>Current mood</li>
-              <li>Current beliefs about the case</li>
-              <li>Probability that the defendant is guilty or innocent</li>
-              <li>Opinions about the other jury members</li>
+              <li>summary of the facts of the case</li>
+              <li>mood</li>
+              <li>beliefs about the case</li>
+              <li>probability that the defendant is guilty or innocent</li>
+              <li>opinions about other jury members</li>
             </ul>
           </p>
           <p>
