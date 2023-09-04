@@ -11,11 +11,11 @@ const ChooseRoom = () => {
   return (
     <div>
       <div className="container max-w-4xl mx-auto md:px-8 px-4 py-4 pb-10 bg-white border-black min-h-screen">
-        <h1 className={'text-center md:text-4xl text-2xl font-bold ' + specialElite.className}>
+        <h1 className={'text-center mb-8 md:text-4xl text-2xl font-bold ' + specialElite.className}>
           <a href="/"><img src="/llama-court.webp" alt="A picture of a llama judge" className="max-w-xs my-6 inline-block" /></a><br />
           How does Llama Court work?
         </h1>
-        <div className="mx-8 text-lg mt-4 space-y-2">
+        <div className="mx-8 text-lg mt-4 space-y-4">
           <p>
             Llama Court is a simulation of a jury deliberation where each jury member is an AI agent. It is open source so you can dive into the <a className="underline" href="https://github.com/andreasjansson/llama-jury">agent code</a> and <a className="underline" href="https://github.com/fofr/llama-court-app">frontend code</a> to see exactly how it works.
           </p>
