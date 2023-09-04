@@ -1,6 +1,6 @@
 export default function GuiltyBars({ guiltyPercent, innocentPercent }) {
   return (
-    <div className="relative flex justify-between pb-1">
+    <div className="relative bg-black flex justify-between p-3">
       <div
         className="absolute bg-green-500 bg-opacity-70 transition-all duration-500"
         style={{

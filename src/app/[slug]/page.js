@@ -30,8 +30,8 @@ export default function Page({ params }) {
           <li key={agent.name} className="w-1/2 m-0 p-0 grid grid-rows-agent" style={{minWidth: '17em'}}>
             <div className="relative">
               <img src={agent.image_uri} alt={agent.name} className="w-full h-full object-cover" />
-              <div className="absolute bottom-0 bg-black bg-opacity-50 p-1 w-full">
-                <p className="whitespace-pre-wrap text-white pb-2">
+              <div className="absolute bottom-0 bg-black bg-opacity-75 p-1 w-full">
+                <p className="max-h-16 hover:max-h-full transition-transform overflow-hidden whitespace-pre-wrap text-white pb-2">
                   <em>Beliefs:</em>
                   <br />
                   {agent.beliefs}
@@ -56,12 +56,12 @@ export default function Page({ params }) {
         ))}
       </ul>
       {evidence && (
-        <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
-          <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={evidence} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
+        <div className="absolute top-0 bg-white p-4">
+          <p className="whitespace-pre-wrap text-black text-sm max-w-prose"><Typewriter text={evidence} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
         </div>
       )}
       {verdict && verdict && (
-        <div className="absolute top-0 left-0 w-full bg-white bg-opacity-80 p-4">
+        <div className="absolute top-0 bg-white p-4">
           <p className="whitespace-pre-wrap text-black text-sm"><Typewriter text={verdict} isPlaying={isPlaying && direction != "forward"} setDirection={setDirection} /></p>
         </div>
       )}
