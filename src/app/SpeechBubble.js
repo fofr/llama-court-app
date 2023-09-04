@@ -4,7 +4,7 @@ import Typewriter from './Typewriter';
 export default function SpeechBubble({ isPlaying, setDirection, text }) {
   return (
     <div className="relative bg-white p-2 m-2">
-      <p className="max-h-60 overflow-scroll">
+      <p className="max-h-60 overflow-auto">
         <Typewriter isPlaying={isPlaying} setDirection={setDirection} text={text} />
       </p>
       <div style={{
