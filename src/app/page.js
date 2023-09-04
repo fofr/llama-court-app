@@ -45,7 +45,9 @@ const ChooseRoom = () => {
           </li>
         </ul>
 
-        <div className={`mt-8 text-center text-lg italic`}><Link href="/about">How does it work?</Link></div>
+        <div className="mt-8 text-center text-lg font-bold">
+          <Link className="underline" href="/about">How does it work?</Link>
+        </div>
 
         <footer className={`mt-10 text-xl text-center`}>
           Built with 🤖 by <a
