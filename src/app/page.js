@@ -11,42 +11,105 @@ const ChooseRoom = () => {
   return (
     <div>
       <div className="container max-w-4xl mx-auto md:px-8 px-4 py-4 pb-10 bg-white border-black min-h-screen">
-        <h1 className={'text-center md:text-4xl text-2xl font-bold ' + specialElite.className}>
-          <img src="/llama-court.webp" alt="A picture of a llama judge" className="max-w-sm my-6 inline-block" /><br />
-          Llama court is now in session
-        </h1>
-        <p className="text-center text-lg">
-          Watch autonomous AI agents debate fictional court cases
-        </p>
-        <ul className="flex place-content-center py-6">
-          <li>
-            <Link
-              className={'text-center md:text-2xl text-xl underline px-2 sm:px-4 ' + specialElite.className}
-              href="/A"
-            >
-              Courtroom&nbsp;A
-            </Link>
-          </li>
-          <li>
-            <Link
-              className={'text-center md:text-2xl text-xl underline px-2 sm:px-4 ' + specialElite.className}
-              href="/B"
-            >
-              Courtroom&nbsp;B
-            </Link>
-          </li>
-          <li>
-            <Link
-              className={'text-center md:text-2xl text-xl underline px-2 sm:px-4 ' + specialElite.className}
-              href="/C"
-            >
-              Courtroom&nbsp;C
-            </Link>
-          </li>
-        </ul>
+        <div className="flex items-start">
+          <div className="w-1/3">
+            <img src="/llama-court.webp" alt="A picture of a llama judge" className="my-6" />
+          </div>
+          <div className="w-2/3">
+            <h1 className={'md:text-6xl text-2xl mt-8 mb-10 font-bold ' + specialElite.className}>
+              Llama court<br />is now in session
+            </h1>
+            <p className="text-lg">
+              We used Llama 2 to build an AI court room, where famous characters debate cases with each other as jurors. Watch autonomous agents Homer and Aristotle debate garden gnome thefts. Or Einstein and Yoda discuss illegal time travel.
+            </p>
+          </div>
+        </div>
 
-        <div className="mt-8 text-center text-lg font-bold">
-          <Link className="underline" href="/about">How does it work?</Link>
+        <div className="mt-12 flex items-start">
+          <div className="w-1/3 rounded pr-6">
+            <img src="/court-house.webp" alt="A picture of a court room" className="rounded" />
+          </div>
+          <div className="w-2/3">
+            <h2 className={'mb-8 md:text-4xl text-2xl font-bold ' + specialElite.className}>
+              Pick a courtroom to watch
+            </h2>
+            <ul className="mb-12 mt-6 space-y-4">
+              <li>
+                <Link
+                  className={'md:text-2xl text-xl underline ' + specialElite.className}
+                  href="/A"
+                >
+                  Courtroom&nbsp;A
+                </Link>
+
+                <p className="text-lg">Aristotle, Homer Simpson, Agatha Christie, Nikola Tesla, Dana Scully, Lieutenant Worf</p>
+              </li>
+              <li>
+                <Link
+                  className={'md:text-2xl text-xl underline ' + specialElite.className}
+                  href="/B"
+                >
+                  Courtroom&nbsp;B
+                </Link>
+
+                <p className="text-lg">Yoda, Albert Einstein, Napoleon Bonaparte, Count Dracula, Mother Teresa, Mikhail Bakunin</p>
+              </li>
+              <li>
+                <Link
+                  className={'md:text-2xl text-xl underline ' + specialElite.className}
+                  href="/C"
+                >
+                  Courtroom&nbsp;C
+                </Link>
+
+                <p className="text-lg">Al Capone, The Log Lady, MacGyver, Confucius, Marie Curie, The Terminator</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 flex items-start">
+          <div className="w-1/3 rounded pr-6">
+            <img src="/how-it-works.webp" alt="A picture of a court room with cogs in it" className="rounded" />
+          </div>
+          <div className="w-2/3">
+            <h2 className={'mb-8 md:text-4xl text-2xl font-bold ' + specialElite.className}>
+              How does Llama Court work?
+            </h2>
+            <div className="text-lg mt-4 space-y-4">
+              <p>
+                Llama Court is a simulation of a jury deliberation where each jury member is an AI agent. It is open source so you can dive into the <a className="underline" href="https://github.com/andreasjansson/llama-jury">agent code</a> and <a className="underline" href="https://github.com/fofr/llama-court-app">frontend code</a> to see exactly how it works.
+              </p>
+              <p>
+                There are three simulated court rooms, each with a jury consisting of six members. Each member has their own personality and opinions.
+              </p>
+              <p>
+                Each jury member has their own:
+              </p>
+              <ul className="list-disc ml-6">
+                <li>summary of the facts of the case</li>
+                <li>mood</li>
+                <li>beliefs about the case</li>
+                <li>probability that the defendant is guilty or innocent</li>
+                <li>opinions about other jury members</li>
+              </ul>
+              <p>
+                At the beginning of a court session the evidence is presented, witnesses are heard and prosecution and defense make their statements. During this time the agents update their summaries of facts, mood, beliefs, and probability of guilt/innocence.
+              </p>
+              <p>
+                After the closing statements, the jury goes into deliberation. Each agent decides how eager they are to speak and a weighted average of &ldquo;speak eagerness&rdquo; is used to pick the next speaker.
+              </p>
+              <p>
+                After an agent has spoken, all the other agents update their mood, beliefs, probability of guilty/innocent, and opinion about the current speaker. Then &ldquo;speak eagerness&rdquo; is computed again and another agent makes a statement. This process is repeated until all agents are certain of the defendant&#39;s guilt or innocence.
+              </p>
+              <p>
+                The court transcript is generated by GPT-4 at the beginning of a session. The agent state is generated and updated by <a href="https://replicate.com/a16z-infra/llama-2-13b-chat" className="underline">Llama 2 13B-chat</a> running on Replicate. Images are generated by <a className="underline" href="https://replicate.com/stability-ai/sdxl">SDXL</a> based on the current mood of the agent.
+              </p>
+              <p>
+                The overall agent architecture was inspired by the <a className="underline" href="https://en.wikipedia.org/wiki/Belief%E2%80%93desire%E2%80%93intention_software_model">Belief-Desire-Intention model</a> and the social relations model used by <a className="underline" href="https://gama-platform.org/wiki/BDIAgents_step3">GAMA</a>. There are so many great multi-agent systems papers from the 1990s waiting to be rediscovered!
+              </p>
+            </div>
+          </div>
         </div>
 
         <footer className={`mt-10 text-xl text-center`}>
